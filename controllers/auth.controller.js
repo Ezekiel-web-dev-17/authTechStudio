@@ -37,7 +37,7 @@ export const signUp = async (req, res, next) => {
         })
         
      } catch (error) {
-        session.abortTransaction()
+        await session.abortTransaction()
         session.endSession()
         next(error)
     }
@@ -53,7 +53,15 @@ export const signIn = async (req, res, next) => {
           throw error;
         }
 
-        const user = await User.findOne({email})
+        const user = await User.findOne({email}).select("+password")
+
+        const decryptPassword = bcrypt.compare(password, user.password)
+
+        if (!decryptPassword) {
+            const error = new Error("Invalid Credentials!")
+            error.statusCode = 401
+            throw error
+        }
 
         if (!user) {
          const error = new Error("User not found. Sign up.");

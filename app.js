@@ -7,18 +7,14 @@ import { connectToDatabase } from "./database/connect.js";
 import { authorize } from "./middleware/auth.middleware.js";
 import errorMiddleware from "./middleware/error.middleware.js";
 import authRouter from "./routes/auth.route.js";
-// import arcjetMiddleware from "./middleware/arcjet.middleware.js";
+import arcjetMiddleware from "./middleware/arcjet.middleware.js";
 
 const app = express()
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-// app.use(arcjetMiddleware)
-
-app.get("/", (req, res) => {
-    res.send("App is Running.")
-})
+app.use(arcjetMiddleware)
 
 app.use(authorize)
 app.use("/api/v1/auth", authRouter)
