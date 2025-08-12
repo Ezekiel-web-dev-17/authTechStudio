@@ -43,7 +43,7 @@ export const updateUser = async(req, res, next) => {
     const {name, email, password} = req.body
 
     if (!name && !email && !password) {
-      return res.status(400).json({success: false, message: "At least of the field must be provided."})
+      return res.status(400).json({success: false, message: "At least one of the fields must be provided."})
     }
 
     const salt = await bcrypt.genSalt(10)

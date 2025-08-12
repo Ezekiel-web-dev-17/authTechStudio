@@ -1,19 +1,16 @@
 import { Router } from "express";
-import { getPost } from "../controllers/post.controller.js";
+import { createPost, deletePost, deletePostByAdmin, getPost, postPut, updatePost, updateViews } from "../controllers/post.controller.js";
 import { admin } from "../middleware/admin.middleware.js";
+import { authorize } from "../middleware/auth.middleware.js";
 
 const postRoute = Router()
 
 postRoute.get("/", admin, getPost)
-postRoute.post("/create", (req, res) => {
-    res.send("Create posts here.")
-})
-postRoute.patch("/edit", (req, res) => {res.send("Posts edited successfully.")})
-postRoute.put("/update", (req, res) => {
-  res.send("Post altered successfully.")  
-})
-postRoute.delete("/", (req, res) => {
-    res.send("Post deleted successfully.")
-})
+postRoute.post("/create", authorize, createPost)
+postRoute.patch("/edit/:id", authorize, updatePost)
+postRoute.put("/update/:id", authorize, postPut)
+postRoute.put("/views/:id", updateViews)
+postRoute.delete("/delete/:id", authorize, deletePost)
+postRoute.delete("/delete/:id", admin, deletePostByAdmin)
 
 export default postRoute
