@@ -131,7 +131,7 @@ export const postPut = async (req, res, next) => {
             })
         }
 
-        const post = await Post.findByIdAndUpdate(id.slice(1).slice(1), {title, content}, { new: true, runValidators: true })
+        const post = await Post.findByIdAndUpdate(id.slice(1), {title, content}, { new: true, runValidators: true })
 
         if (!post) {
             const error = new Error("Post not found!")
