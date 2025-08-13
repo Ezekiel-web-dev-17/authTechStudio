@@ -8,7 +8,7 @@ export const signUp = async (req, res, next) => {
     const session = await mongoose.startSession()
     session.startTransaction()
     try {
-        const {name, email, password} = req.body
+        const {name, email, password, isAdmin} = req.body
 
         if (!name || !email || !password) {return res.status(400).json({success: false, message: "Name, email, and password are required."})}
 
@@ -24,7 +24,7 @@ export const signUp = async (req, res, next) => {
         const salt = await bcrypt.genSalt(10)
         const encryptedPassword = await bcrypt.hash(password, salt)
 
-        const newUser = await User.create([{name, email, password: encryptedPassword}], {session})
+        const newUser = await User.create([{name, email, password: encryptedPassword, isAdmin: isAdmin ? true : false}], {session})
 
         const token = jwt.sign({userId: newUser[0]._id}, JWT_SECRET, {expiresIn: JWT_EXPIRES_IN})
 
