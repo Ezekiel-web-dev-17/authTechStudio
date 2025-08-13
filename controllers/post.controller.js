@@ -89,7 +89,6 @@ export const updatePost = async(req, res, next) => {
       })
     }
 
-    // ✅ FIXED: Authorization check
     if (existingPost.by.toString() !== req.user._id.toString() && !req.user.isAdmin) {
       return res.status(403).json({
         success: false, 
@@ -108,12 +107,28 @@ export const updatePost = async(req, res, next) => {
 export const postPut = async (req, res, next) => {
     try {
         const {title, content} = req.body
-        const {id} = req.params
+        const {id} = req.params.slice(1)
 
         if (!title || !content) {
             const error = new Error("Title and Content are required!")
             error.statusCode = 400;
             throw error
+        }
+
+         const existingPost = await Post.findById(id)
+    
+         if (!existingPost) {
+            return res.status(404).json({
+                success: false, 
+                message: "Post not found!"
+            })
+        }
+
+        if (existingPost.by.toString() !== req.user._id.toString()) {
+            return res.status(403).json({
+                success: false, 
+                message: "You can only edit your own posts."
+            })
         }
 
         const post = await Post.findByIdAndUpdate(id.slice(1), {title, content}, { new: true, runValidators: true })
