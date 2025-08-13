@@ -52,7 +52,7 @@ authTechStudio/
 
 ### Prerequisites
 - Node.js v16+
-- MongoDB Atlas or local MongoDB instance
+- MongoDB Atlas
 
 ### Steps
 ```bash
@@ -97,11 +97,11 @@ Login at **/api/v1/auth/sign-in** to receive a JWT token.
 ---
 
 🔑 Authentication & Role-Based Access
-Register as a new user via /api/auth/register.
+Register as a new user via /api/v1/auth/register.
 
-Login at /api/auth/login to receive a JWT token.
+Login at /api/v1/auth/login to receive a JWT token.
 
-Include token in Authorization: Bearer <token> header for protected routes.
+Include token in Authorization: Bearer <token> header for protected, user only and admin only routes.
 
 Admin privileges are required for create, update, and delete operations.
 
