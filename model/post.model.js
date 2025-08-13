@@ -13,7 +13,7 @@ const postSchema = new Schema({
         required: [true, "Post title is Required"],
         uppercase: true,
         minLength: 3,
-        maxLength: 30
+        maxLength: 50
     },
 
     content: {

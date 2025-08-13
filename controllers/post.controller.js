@@ -54,7 +54,7 @@ export const updateViews = async (req, res, next) => {
         const {id} = req.params
 
         const post = await Post.findByIdAndUpdate(
-            id, 
+            id.slice(1), 
             { $inc: { views: 1 } },
             { new: true }
         )
@@ -74,12 +74,13 @@ export const updateViews = async (req, res, next) => {
 export const updatePost = async(req, res, next) => {
   try {
     const {title, content} = req.body
+    const id = req.params.id.slice(1)
 
     if (!title && !content) {
       return res.status(400).json({success: false, message: "At least one field (title or content) must be provided."})
     }
 
-    const existingPost = await Post.findById(req.params.id)
+    const existingPost = await Post.findById(id)
     
     if (!existingPost) {
       return res.status(404).json({
@@ -96,7 +97,7 @@ export const updatePost = async(req, res, next) => {
       })
     }
 
-    const editedPost = await Post.findByIdAndUpdate(req.params.id, {...(title && {title}), ...(content && {content})}, {new: true, runValidators: true})
+    const editedPost = await Post.findByIdAndUpdate(id, {...(title && {title}), ...(content && {content})}, {new: true, runValidators: true})
 
     res.status(200).json({success: true, message: "Post edited successfully", post: editedPost})
   } catch (error) {
@@ -115,7 +116,7 @@ export const postPut = async (req, res, next) => {
             throw error
         }
 
-        const post = await Post.findByIdAndUpdate(id, {title, content}, { new: true, runValidators: true })
+        const post = await Post.findByIdAndUpdate(id.slice(1), {title, content}, { new: true, runValidators: true })
 
         if (!post) {
             const error = new Error("Post not found!")
@@ -133,8 +134,9 @@ export const postPut = async (req, res, next) => {
 export const deletePost = async (req, res, next) => {
     try {
         const {id} = req.params
+        const identity = id.slice(1)
 
-        const post = await Post.findById(id)
+        const post = await Post.findById(identity)
 
         if (!post) {
             return res.status(404).json({
@@ -150,7 +152,7 @@ export const deletePost = async (req, res, next) => {
             })
         }
 
-        await Post.findByIdAndDelete(id)
+        await Post.findByIdAndDelete(identity)
 
         res.status(200).json({success: true, message: "Post deleted successfully."})
     } catch (error) {
@@ -161,8 +163,10 @@ export const deletePost = async (req, res, next) => {
 export const deletePostByAdmin = async (req, res, next) => {
     try {
         const {id} = req.params
+        const identity = id.slice(1)
 
-        const post = await Post.findById(id)
+
+        const post = await Post.findById(identity)
 
         if (!post) {
             return res.status(404).json({
@@ -171,7 +175,7 @@ export const deletePostByAdmin = async (req, res, next) => {
             })
         }
 
-        await Post.findByIdAndDelete(id)
+        await Post.findByIdAndDelete(identity)
 
         res.status(200).json({success: true, message: "Post deleted successfully by Admin."})
     } catch (error) {

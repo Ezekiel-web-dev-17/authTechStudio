@@ -16,14 +16,15 @@ export const getUsers = async(req, res, next) => {
 export const getUserById = async (req, res, next) => {
   try {
     const {id} = req.params
+    const identity = id.slice(1)
     
-    if (!id) {
+    if (!identity) {
       const error = new Error("User id is required!")
       error.statusCode = 400;
       throw error
     } 
 
-    const user = await User.findById(id).select("-password")
+    const user = await User.findById(identity).select("-password")
 
     if (!user) {
       const error = new Error("User not found!")
@@ -48,7 +49,7 @@ export const updateUser = async(req, res, next) => {
       return res.status(400).json({success: false, message: "At least one of the fields must be provided."})
     }
 
-    if (req.params.id !== req.user._id.toString() && !req.user.isAdmin) {
+    if (req.params.id.slice(1) !== req.user._id.toString() && !req.user.isAdmin) {
       return res.status(403).json({
         success: false,
         message: "You can only update your own profile."
@@ -66,7 +67,7 @@ export const updateUser = async(req, res, next) => {
     }
 
     const editedUser = await User.findByIdAndUpdate(
-      req.params.id, 
+      req.params.id.slice(1), 
       updateData,
       {new: true, runValidators: true}
     ).select("-password")
@@ -82,7 +83,7 @@ export const updateUser = async(req, res, next) => {
 
 export const deleteUser = async (req, res, next) => {
   try {
-    const {id} = req.params
+    const {id} = req.params.slice(1)
 
     const user = await User.findById(id)
     

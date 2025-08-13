@@ -14,11 +14,11 @@ const aj = arcjet({
       mode: "LIVE", // Blocks requests. Use "DRY_RUN" to log only
       // Block all bots except the following
      deny: [
-     "CATEGORY:SEARCH_ENGINE",
+     "CATEGORY:ADVERTISING",
      "CATEGORY:AI",
-     "CATEGORY:MONITOR",
-     "CATEGORY:SCRAPER",
-     "CATEGORY:VULN_SCANNER",
+     "CATEGORY:ARCHIVE",
+    "CATEGORY:OPTIMIZER",
+     "CATEGORY:YAHOO",
       ]
     }),
     // Create a token bucket rate limit. Other algorithms are supported.
