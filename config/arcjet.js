@@ -13,13 +13,17 @@ const aj = arcjet({
     detectBot({
       mode: "LIVE", // Blocks requests. Use "DRY_RUN" to log only
       // Block all bots except the following
-      allow: [
-        "CATEGORY:SEARCH_ENGINE", // Google, Bing, etc
-        // Uncomment to allow these other common bot categories
-        // See the full list at https://arcjet.com/bot-list
-        "CATEGORY:POSTMAN", // Uptime monitoring services
-        "CATEGORY:PREVIEW", // Link previews e.g. Slack, Discord
-      ],
+     deny: [
+      "CATEGORY:AI",              // AI scrapers, model training crawlers
+      "CATEGORY:SPAM",            // Email harvesters, spam bots
+      "CATEGORY:MONITOR",         // Uptime monitors that hammer your server
+      "CATEGORY:SCRAPER",         // Generic web scrapers
+      "CATEGORY:VULN_SCANNER",    // Security scanners looking for exploits
+      "CATEGORY:HEADLESS",        // Headless browsers (often used for automation attacks)
+      "CATEGORY:MARKETING",       // Bulk marketing crawlers
+      "CATEGORY:AI_IMAGE",        // Bots scraping images for AI datasets
+      "CATEGORY:MALWARE",         // Bots with malicious fingerprints
+  ],
     }),
     // Create a token bucket rate limit. Other algorithms are supported.
     tokenBucket({
