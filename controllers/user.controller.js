@@ -1,7 +1,9 @@
+import bcrypt from "bcryptjs";
 import User from "../model/user.model.js"
+
 export const getUsers = async(req, res, next) => {
     try {
-    const users = await User.find();
+    const users = await User.find().select("-password");
     res.status(200).json({
       success: true,
       data: users,
@@ -17,7 +19,7 @@ export const getUserById = async (req, res, next) => {
     
     if (!id) {
       const error = new Error("User id is required!")
-      error.statusCode(400)
+      error.statusCode = 400;
       throw error
     } 
 
@@ -25,7 +27,7 @@ export const getUserById = async (req, res, next) => {
 
     if (!user) {
       const error = new Error("User not found!")
-      error.statusCode(404)
+      error.statuscode = 404;
       throw error
     } 
 
@@ -46,17 +48,33 @@ export const updateUser = async(req, res, next) => {
       return res.status(400).json({success: false, message: "At least one of the fields must be provided."})
     }
 
-    const salt = await bcrypt.genSalt(10)
+    if (req.params.id !== req.user._id.toString() && !req.user.isAdmin) {
+      return res.status(403).json({
+        success: false,
+        message: "You can only update your own profile."
+      })
+    }
 
-    const encryptPassword = await bcrypt.hash(password, salt)
+   const updateData = {
+      ...(name && {name}), 
+      ...(email && {email})
+    }
 
-    const editedUser = await User.findByIdAndUpdate(req.params.id, {...(name && {name}), ...(email && {email}),...(password && {password: encryptPassword})}, {new: true, runValidators: ture})
+    if (password) {
+      const salt = await bcrypt.genSalt(10)
+      updateData.password = await bcrypt.hash(password, salt)
+    }
 
+    const editedUser = await User.findByIdAndUpdate(
+      req.params.id, 
+      updateData,
+      {new: true, runValidators: true}
+    ).select("-password")
     if (!editedUser) {
       return res.status(404).json({success: false, message: "User not found!"})
     }
 
-    res.status(201).json({success: true, user: editedUser})
+    res.status(200).json({success: true, user: editedUser})
   } catch (error) {
     next(error)
   }
@@ -65,6 +83,15 @@ export const updateUser = async(req, res, next) => {
 export const deleteUser = async (req, res, next) => {
   try {
     const {id} = req.params
+
+    const user = await User.findById(id)
+    
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found!"
+      })
+    }
 
     await User.findByIdAndDelete(id)
 

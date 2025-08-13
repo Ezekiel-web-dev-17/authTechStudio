@@ -5,7 +5,6 @@ const postSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: [true, "by field is required."],
-        minLength: 2,
         trim: true,
     },
 
