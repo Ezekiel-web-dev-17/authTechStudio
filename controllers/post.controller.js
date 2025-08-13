@@ -5,7 +5,7 @@ import User from "../model/user.model.js"
 export const getPost = async (req, res, next) => {
     try {
         const posts = await Post.find().populate('by', 'name email')
-        res.status(200).json({sucess:true, posts})
+        res.status(200).json({success:true, posts})
     } catch (error) {
         next(error)
     }
@@ -111,7 +111,7 @@ export const postPut = async (req, res, next) => {
 
         if (!title || !content) {
             const error = new Error("Title and Content are required!")
-            error.statusCode = 401;
+            error.statusCode = 400;
             throw error
         }
 
@@ -170,7 +170,7 @@ export const deletePostByAdmin = async (req, res, next) => {
                 message: "Post not found!"
             })
         }
-        
+
         await Post.findByIdAndDelete(id)
 
         res.status(200).json({success: true, message: "Post deleted successfully by Admin."})

@@ -1,5 +1,4 @@
 import arcjet, { shield, detectBot, tokenBucket } from "@arcjet/node";
-// import { isSpoofedBot } from "@arcjet/inspect";
 import { ARCJET_KEY } from "../config/config.js";
 
 const aj = arcjet({
