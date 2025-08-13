@@ -107,7 +107,7 @@ export const updatePost = async(req, res, next) => {
 export const postPut = async (req, res, next) => {
     try {
         const {title, content} = req.body
-        const {id} = req.params.slice(1)
+        const {id} = req.params
 
         if (!title || !content) {
             const error = new Error("Title and Content are required!")
@@ -115,7 +115,7 @@ export const postPut = async (req, res, next) => {
             throw error
         }
 
-         const existingPost = await Post.findById(id)
+         const existingPost = await Post.findById(id.slice(1))
     
          if (!existingPost) {
             return res.status(404).json({
@@ -131,7 +131,7 @@ export const postPut = async (req, res, next) => {
             })
         }
 
-        const post = await Post.findByIdAndUpdate(id.slice(1), {title, content}, { new: true, runValidators: true })
+        const post = await Post.findByIdAndUpdate(id.slice(1).slice(1), {title, content}, { new: true, runValidators: true })
 
         if (!post) {
             const error = new Error("Post not found!")

@@ -83,9 +83,9 @@ export const updateUser = async(req, res, next) => {
 
 export const deleteUser = async (req, res, next) => {
   try {
-    const {id} = req.params.slice(1)
+    const {id} = req.params
 
-    const user = await User.findById(id)
+    const user = await User.findById(id.slice(1))
     
     if (!user) {
       return res.status(404).json({
@@ -94,7 +94,7 @@ export const deleteUser = async (req, res, next) => {
       })
     }
 
-    await User.findByIdAndDelete(id)
+    await User.findByIdAndDelete(id.slice(1))
 
     res.status(204).json({
       success: true,
