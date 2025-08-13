@@ -19,10 +19,6 @@ const aj = arcjet({
      "CATEGORY:MONITOR",
      "CATEGORY:SCRAPER",
      "CATEGORY:VULN_SCANNER",
-      ],
-      allow: [
-      "CATEGORY:SEARCH_ENGINE",
-      "CATEGORY:PREVIEW",
       ]
     }),
     // Create a token bucket rate limit. Other algorithms are supported.
