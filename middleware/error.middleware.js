@@ -1,6 +1,6 @@
 const errorMiddleware = async (err, req, res, next) => {
     try {
-        const error = {...err}
+        let error = {...err}
 
         error.message = err.message;
 

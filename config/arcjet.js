@@ -14,16 +14,16 @@ const aj = arcjet({
       mode: "LIVE", // Blocks requests. Use "DRY_RUN" to log only
       // Block all bots except the following
      deny: [
-      "CATEGORY:AI",              // AI scrapers, model training crawlers
-      "CATEGORY:SPAM",            // Email harvesters, spam bots
-      "CATEGORY:MONITOR",         // Uptime monitors that hammer your server
-      "CATEGORY:SCRAPER",         // Generic web scrapers
-      "CATEGORY:VULN_SCANNER",    // Security scanners looking for exploits
-      "CATEGORY:HEADLESS",        // Headless browsers (often used for automation attacks)
-      "CATEGORY:MARKETING",       // Bulk marketing crawlers
-      "CATEGORY:AI_IMAGE",        // Bots scraping images for AI datasets
-      "CATEGORY:MALWARE",         // Bots with malicious fingerprints
-  ],
+     "CATEGORY:SEARCH_ENGINE",
+     "CATEGORY:AI",
+     "CATEGORY:MONITOR",
+     "CATEGORY:SCRAPER",
+     "CATEGORY:VULN_SCANNER",
+      ],
+      allow: [
+      "CATEGORY:SEARCH_ENGINE",
+      "CATEGORY:PREVIEW",
+      ]
     }),
     // Create a token bucket rate limit. Other algorithms are supported.
     tokenBucket({
