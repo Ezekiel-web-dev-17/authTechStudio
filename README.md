@@ -75,19 +75,24 @@ npm start
 ---
 📡 API Endpoints
 
-Register as a new user via **/api/auth/register**.  
-Login at **/api/auth/login** to receive a JWT token.
+Register as a new user via **/api/v1/auth/sign-up**.  
+Login at **/api/v1/auth/sign-in** to receive a JWT token.
 
 ### Authentication
-| Method | Endpoint            | Access      | Description        |
-|--------|---------------------|-------------|--------------------|
-| POST   | /api/auth/register  | Public      | Register a new user|
-| POST   | /api/auth/login     | Public      | Login & get JWT    |
-| POST   | /api/posts          | Admin only  | Create a new post  |
-| GET    | /api/posts          | Public      | Get all posts      |
-| GET    | /api/posts/:id      | Public      | Get single post    |
-| PUT	   | /api/posts/:id      | Admin       | Update a post      |
-| DELETE | /api/posts/:id      | Admin       | Delete a post      |
+| Method | Endpoint                       | Access     | Description             |
+|--------|--------------------------------|------------|-------------------------|
+| GET    | /api/v1/users/                 | Protected  | Get all users           |
+| GET    | /api/v1/users/:id              | Protected  | Get user by id          |
+| GET    | /api/v1/posts/                 | Protected  | Get all posts           |
+| PATCH  | /api/v1/users/edit/:id         | User only  | Edit a user profile     |
+| POST   | /api/v1/auth/sign-up           | Public     | Register a new user     |
+| POST   | /api/v1/auth/sign-in           | Public     | Login & get JWT         |
+| POST   | /api/v1/posts/create           | Protected  | Create a new post       |
+| PUT	 | /api/v1/posts/update/:id       | Admin/User | Update a post           |
+| PUT	 | /api/v1/posts/views/:id        | Protected  | Update post's views     |
+| DELETE | /api/v1/posts/delete/:id       | Protected  | Delete a post by author |
+| DELETE | /api/v1/posts/admin/delete/:id | Admin only | Delete a post by Admin  |
+| DELETE | /api/v1/users/delete/:id       | Admin only | Delete a user           |
 
 ---
 
@@ -116,7 +121,7 @@ Uses HTTP status codes:
 [Postman Collection Link](https://documenter.getpostman.com/view/41487666/2sB3BGHAD8)
 
 🌍 Deployment
-Hosted on: https://authtechstudio.onrender.com
+Hosted on: (https://authtechstudio.onrender.com)
 
 🏆 Evaluation Criteria Checklist
 - [x] JWT Authentication  
