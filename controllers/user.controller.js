@@ -49,7 +49,7 @@ export const updateUser = async(req, res, next) => {
       return res.status(400).json({success: false, message: "At least one of the fields must be provided."})
     }
 
-    if (req.params.id.slice(1) !== req.user._id.toString() && !req.user.isAdmin) {
+    if (req.params.id.slice(1) !== req.user._id.toString()) {
       return res.status(403).json({
         success: false,
         message: "You can only update your own profile."
