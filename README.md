@@ -81,12 +81,14 @@ Login at **/api/v1/auth/sign-in** to receive a JWT token.
 ### Authentication
 | Method | Endpoint                       | Access     | Description             |
 |--------|--------------------------------|------------|-------------------------|
-| GET    | /api/v1/users/                 | Protected  | Get all users           |
+| GET    | /api/v1/users/                 | Public  | Get all users           |
 | GET    | /api/v1/users/:id              | Protected  | Get user by id          |
 | GET    | /api/v1/posts/                 | Protected  | Get all posts           |
 | PATCH  | /api/v1/users/edit/:id         | User only  | Edit a user profile     |
 | POST   | /api/v1/auth/sign-up           | Public     | Register a new user     |
 | POST   | /api/v1/auth/sign-in           | Public     | Login & get JWT         |
+| POST   | /api/v1/auth/logout           | Protected  | Logs out a user       |
+| POST   | /api/v1/auth/refresh-token           | Protected  | Create a new token       |
 | POST   | /api/v1/posts/create           | Protected  | Create a new post       |
 | PUT	 | /api/v1/posts/update/:id       | Admin/User | Update a post           |
 | PUT	 | /api/v1/posts/views/:id        | Protected  | Update post's views     |
