@@ -11,6 +11,6 @@ postRoute.patch("/edit/:id", authorize, updatePost)
 postRoute.put("/update/:id", authorize, postPut)
 postRoute.put("/views/:id", updateViews)
 postRoute.delete("/delete/:id", authorize, deletePost)
-postRoute.delete("/admin/delete/:id", admin, authorize, deletePostByAdmin)
+postRoute.delete("/admin/delete/:id", admin, deletePostByAdmin)
 
 export default postRoute

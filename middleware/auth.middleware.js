@@ -13,28 +13,54 @@ export const authorize = async(req, res, next) => {
      if (!token) {
          return res.status(401).json({
              success: false,
-             message: "Access token required."
+             message: "Access token required.",
          })
      }
      
-     const decodeToken = jwt.verify(token, JWT_SECRET)
-     
-     const user = await User.findById(decodeToken.userId)
-     
-     if (!user) {
-         return res.status(401).json({
-             success: false,
-             message: "Invalid token - user not found."
-         })
-     }
- 
-     req.user = user;
-     
-     next();
+         try {
+         const decodeToken = jwt.verify(token, JWT_SECRET)
+         
+         const user = await User.findById(decodeToken.userId)
+         
+         if (!user) {
+             return res.status(401).json({
+                 success: false,
+                 message: "Invalid token - user not found."
+             })
+         }
+
+         req.user = user;
+         next();
+         
+     } catch (jwtError) {
+         if (jwtError.name === 'TokenExpiredError') {
+             return res.status(401).json({
+                 success: false,
+                 message: "Token has expired. Please login again.",
+                 expiredAt: jwtError.expiredAt
+             })
+         }
+         
+         if (jwtError.name === 'JsonWebTokenError') {
+             return res.status(401).json({
+                 success: false,
+                 message: "Invalid token format or signature.",
+             })
+         }
+         
+         if (jwtError.name === 'NotBeforeError') {
+             return res.status(401).json({
+                 success: false,
+                 message: "Token not active yet.",
+             })
+         }
+         
+         throw jwtError;
+     }     
    } catch (error) {
     return res.status(401).json({
         success: false,
-        message: "Invalid or expired token.",
+        message: "Authentication failed.",
         error: error.message
     })
    }
@@ -45,6 +71,14 @@ export const conditionalAuth = (req, res, next) => {
     if (req.path === '/api/v1/auth/sign-up' || req.path === '/api/v1/auth/sign-in') {
         return next();
     }
+
+    if (req.method === 'GET' && req.path === '/api/v1/posts/') {
+        const authHeader = req.headers.authorization;
+        if (!authHeader || !authHeader.startsWith("Bearer ")) {
+            return next(); 
+        }
+    }
+
     // Apply auth to all other routes
     return authorize(req, res, next);
 }

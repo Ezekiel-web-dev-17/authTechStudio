@@ -5,7 +5,6 @@ import cookieParser from "cookie-parser";
 import userRoutes from "./routes/user.route.js";
 import { PORT } from "./config/config.js";
 import { connectToDatabase } from "./database/connect.js";
-import { conditionalAuth } from "./middleware/auth.middleware.js";
 import errorMiddleware from "./middleware/error.middleware.js";
 import authRouter from "./routes/auth.route.js";
 import arcjetMiddleware from "./middleware/arcjet.middleware.js";
@@ -28,7 +27,6 @@ app.use(express.urlencoded({ extended: false, limit: '10mb' }));
 app.use(cookieParser());
 
 app.use(arcjetMiddleware)
-app.use(conditionalAuth)
 
 app.use("/api/v1/auth", authRouter)
 app.use("/api/v1/posts", postRoute)

@@ -29,13 +29,26 @@ const userSchema = new Schema({
     isAdmin: {
         type: Boolean,
         default: false
-    }
+    },
+
+    refreshTokens: [{
+        token: {
+            type: String,
+            required: true
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now,
+            expires: '7d'
+        }
+    }]
 }, {
     timestamps: true,
     // Add schema-level validation
     toJSON: {
         transform: function(doc, ret) {
             delete ret.password; // Never return password in JSON
+            delete ret.refreshTokens; // Never return refresh tokens in JSON
             return ret;
         }
     }
