@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import User from "../model/user.model.js"
+import { User } from "../model/user.model.js";
 
 export const getUsers = async(req, res, next) => {
     try {
@@ -28,7 +28,7 @@ export const getUserById = async (req, res, next) => {
 
     if (!user) {
       const error = new Error("User not found!")
-      error.statuscode = 404;
+      error.statusCode = 404;
       throw error
     } 
 
@@ -96,7 +96,7 @@ export const deleteUser = async (req, res, next) => {
 
     await User.findByIdAndDelete(id.slice(1))
 
-    res.status(204).json({
+    res.status(200).json({
       success: true,
       message: "User deleted successfully."
     })

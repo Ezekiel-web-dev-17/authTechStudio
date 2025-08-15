@@ -1,6 +1,13 @@
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../config/config.js";
-import User from "../model/user.model.js"
+import { User } from "../model/user.model.js";
+
+const accessTokenReq = (res) => {
+    return res.status(401).json({
+        success: false,
+        message: "Access token required.",
+    })
+}
 
 export const authorize = async(req, res, next) => {
    try {
@@ -11,26 +18,31 @@ export const authorize = async(req, res, next) => {
      }
  
      if (!token) {
-         return res.status(401).json({
-             success: false,
-             message: "Access token required.",
-         })
+        return accessTokenReq(res)
      }
      
-         try {
+     try {
          const decodeToken = jwt.verify(token, JWT_SECRET)
-         
-         const user = await User.findById(decodeToken.userId)
-         
-         if (!user) {
-             return res.status(401).json({
-                 success: false,
-                 message: "Invalid token - user not found."
-             })
-         }
 
-         req.user = user;
-         next();
+        if (!decodeToken) { 
+            return accessTokenReq(res)
+        }
+
+        const user = await User.findById(decodeToken.userId);        
+        
+        if (!user) {
+            return res.status(401).json({
+                success: false,
+                message: "Invalid token - user not found."
+            })
+        }
+        
+        if (decodeToken.tokenVersion !== user.tokenVersion) {
+          return res.status(401).json({ success: false, message: "Logged out already." });
+        }
+
+        req.user = user;
+        next();
          
      } catch (jwtError) {
          if (jwtError.name === 'TokenExpiredError') {
