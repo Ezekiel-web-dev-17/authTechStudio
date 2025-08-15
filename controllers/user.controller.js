@@ -55,6 +55,10 @@ export const updateUser = async(req, res, next) => {
         message: "You can only update your own profile."
       })
     }
+    
+    if (password.length < 8) {
+      return res.status(401).json({success: false, message: "Password must be at least 8 characters."})
+    }
 
    const updateData = {
       ...(name && {name}), 

@@ -81,17 +81,18 @@ Login at **/api/v1/auth/sign-in** to receive a JWT token.
 ### Authentication
 | Method | Endpoint                       | Access     | Description             |
 |--------|--------------------------------|------------|-------------------------|
-| GET    | /api/v1/users/                 | Public  | Get all users           |
+| GET    | /api/v1/users/                 | Protected  | Get all users           |
 | GET    | /api/v1/users/:id              | Protected  | Get user by id          |
-| GET    | /api/v1/posts/                 | Protected  | Get all posts           |
-| PATCH  | /api/v1/users/edit/:id         | User only  | Edit a user profile     |
+| GET    | /api/v1/posts/                 | Public  | Get all posts           |
+| PATCH  | /api/v1/users/edit/:id         | Protected | Edit a user profile     |
+| PATCH	 | /api/v1/posts/edit/:id       | Protected / Admin | Edit a post           |
 | POST   | /api/v1/auth/sign-up           | Public     | Register a new user     |
 | POST   | /api/v1/auth/sign-in           | Public     | Login & get JWT         |
-| POST   | /api/v1/auth/logout           | Protected  | Logs out a user       |
-| POST   | /api/v1/auth/refresh-token           | Protected  | Create a new token       |
+| POST   | /api/v1/auth/logout           | Protected | Logs out a user       |
+| POST   | /api/v1/auth/refresh-token           | Public  | Create a new Access token       |
 | POST   | /api/v1/posts/create           | Protected  | Create a new post       |
-| PUT	 | /api/v1/posts/update/:id       | Admin/User | Update a post           |
-| PUT	 | /api/v1/posts/views/:id        | Protected  | Update post's views     |
+| PUT	 | /api/v1/posts/update/:id       | Protected | Update a post           |
+| PUT	 | /api/v1/posts/views/:id        | Public  | Update post's views     |
 | DELETE | /api/v1/posts/delete/:id       | Protected  | Delete a post by author |
 | DELETE | /api/v1/posts/admin/delete/:id | Admin only | Delete a post by Admin  |
 | DELETE | /api/v1/users/delete/:id       | Admin only | Delete a user           |
@@ -103,7 +104,7 @@ Register as a new user via /api/v1/auth/register.
 
 Login at /api/v1/auth/login to receive a JWT token.
 
-Include token in Authorization: Bearer <token> header for protected, user only and admin only routes.
+Include token in Authorization: Bearer <token> header for Protected and Admin only routes.
 
 Admin privileges are required for create, update, and delete operations.
 
