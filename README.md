@@ -121,7 +121,7 @@ Uses HTTP status codes:
 500 – Server Error
 
 📄 API Documentation
-[Postman Collection Link](https://documenter.getpostman.com/view/41487666/2sB3BGHAD8)
+[Postman Collection Link]https://documenter.getpostman.com/view/41487666/2sB3BHk8pY
 
 🌍 Deployment
 Hosted on: (https://authtechstudio.onrender.com)
