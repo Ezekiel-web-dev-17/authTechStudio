@@ -81,7 +81,7 @@ Login at **/api/v1/auth/sign-in** to receive a JWT token.
 ### Authentication
 | Method | Endpoint                       | Access     | Description             |
 |--------|--------------------------------|------------|-------------------------|
-| GET    | /api/v1/users/                 | Protected  | Get all users           |
+| GET    | /api/v1/users/                 | Admin  | Get all users           |
 | GET    | /api/v1/users/:id              | Protected  | Get user by id          |
 | GET    | /api/v1/posts/                 | Public  | Get all posts           |
 | PATCH  | /api/v1/users/edit/:id         | Protected | Edit a user profile     |
